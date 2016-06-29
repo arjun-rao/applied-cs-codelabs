@@ -1,0 +1,423 @@
+<html>
+<head>
+  <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes">
+  <meta name="theme-color" content="#4F7DC9">
+  <meta charset="UTF-8">
+  <script src="../bower_components/webcomponentsjs/webcomponents.min.js"></script>
+  <script src="../js/menu.js"></script>
+  <link rel="import" href="../bower_components/polymer/polymer.html">
+  <link rel="import" href="../codelab_components/codelab-codelab/codelab-codelab.html">
+  <link rel="stylesheet" href="../css/app.css">
+  <link rel="stylesheet" href="../css/shadowdom-shim.css" shim-shadowdom>
+  <link rel="shortcut icon" href="../img/favicon.png">
+  <style>
+    p {
+      text-align:justify;
+    }
+  </style>
+</head>
+<body unresolved>
+
+  <codelab-codelab label="Unit 1: Getting Started"
+      feedback_link="mailto:mailarjunrao@gmail.com"
+        category="Beginner"
+        environment="web"
+    >
+
+
+      <codelab-step
+        label="Welcome"
+        duration="0">
+        <br>
+        <p>
+          In this unit, we are starting to work on Android Studio, the official IDE for Android application development, based on IntelliJ IDEA.
+          <br><br>
+          The biggest part of this preparation will be for you to install and setup Android Studio on your laptop.
+        </p>
+        <p>
+          Android Studio provides everything you need to start developing apps for Android, including the Android Studio IDE and the Android SDK tools.
+        </p>
+        <p>
+          Before installing Android Studio, make sure you have JDK 6 or higher installed—the JRE alone is not sufficient.
+          When developing for Android 5.0 (API level 21) and higher, you will need to install JDK 7.
+          To check if you have the correct version of the JDK installed, open a terminal and type
+          <pre>javac -version</pre>
+           If the JDK is not available or the version is lower than version 6, download the <a href="http://www.oracle.com/technetwork/java/javase/downloads/jdk7-downloads-1880260.html">Java SE Development Kit 7 </a>
+        </p>
+        <p>
+          <h3>Download Android Studio from <a href="https://developer.android.com/sdk/index.html">Here!</a></h3>
+        </p>
+
+
+      </codelab-step>
+
+      <codelab-step
+            label="Running Hello World"
+            duration="0">
+            <br>
+            <p>In Android Studio, create a new project:</p>
+
+            <ul>
+              <li>If you don&#39;t have a project opened, in the&nbsp;<strong>Welcome</strong>&nbsp;screen, click&nbsp;<strong>New Project</strong>.</li>
+              <li>If you have a project opened, from the&nbsp;<strong>File</strong>&nbsp;menu, select&nbsp;<strong>New Project</strong>. The&nbsp;<em>Create New Project</em>&nbsp;screen appears.</li>
+            </ul>
+            <p>Fill out the fields on the screen, and click&nbsp;<strong>Next</strong>.</p>
+
+            <p>The following describes the values to fill in:</p>
+
+            <ul>
+              <li><strong>Application Name</strong>&nbsp;is the app name that appears to users. For this project, use &quot;My First App.&quot;</li>
+              <li><strong>Company domain</strong>&nbsp;provides a qualifier that will be appended to the package name; Android Studio will remember this qualifier for each new project you create.</li>
+              <li><strong>Package name</strong>&nbsp;is the fully qualified name for the project (following the same rules as those for naming packages in the Java programming language). Your package name must be unique across all packages installed on the Android system. You can&nbsp;<strong>Edit</strong>&nbsp;this value independently from the application name or the company domain.</li>
+              <li><strong>Project location</strong>&nbsp;is the directory on your system that holds the project files.</li>
+            </ul>
+            <p>
+              This should have set you up with a simple hello world project, that can be run on a device or emulator.
+              <br>Check out the documentation on running your app <a href="https://developer.android.com/training/basics/firstapp/running-app.html">here</a>
+            </p>
+
+
+      </codelab-step>
+      <codelab-step
+            label="Logging and Debugging"
+            duration="0">
+            <br>
+
+            <p>As you start running applications on your phone you will need a way to get information about what your app is doing, particularly as you start debugging issues in your code. In Java, you would do this with calls to&nbsp;<code>System.out.println()</code>&nbsp;but that does not produce the desired result in an Android app. Instead, you will use the logging module as described in this&nbsp;<a href="https://web.archive.org/web/20150703150608/http://www.codelearn.org/android-tutorial/android-log">tutorial</a>.</p>
+
+            <p>If you run into unexpected error messages over the course of the preparation or workshop, don&#39;t hesitate to use Google to search for solutions to your problem.&nbsp;<a href="http://stackoverflow.com/">StackOverflow</a>&nbsp;and other online communities contain many useful resources that can help you debug issues that you might encounter with Android Studio and the Android SDK.</p>
+
+            <p>If you are still unable to connect to Android Studio and run an app on your device, speak to your local facilitator at the next office hours, or via email.</p>
+
+      </codelab-step>
+      <codelab-step
+            label="Java Concepts Review"
+            duration="0">
+            <br>
+
+            <p>We will be using a few data structures in the workshop activity, so please look over your course (or online) notes on&nbsp;<a href="https://docs.oracle.com/javase/7/docs/api/java/util/ArrayList.html">ArrayLists</a>,&nbsp;<a href="https://docs.oracle.com/javase/7/docs/api/java/util/HashSet.html">HashSets</a>, and&nbsp;<a href="https://docs.oracle.com/javase/7/docs/api/java/util/HashMap.html">HashMaps</a>. You should be able to confidently insert, delete, access and check existence for elements using these data structures in Java.</p>
+
+            <p>As an example activity using HashMaps, create a program (not necessarily an Android app - command-line is fine) that will take in a three-letter country code (see&nbsp;<a href="http://unstats.un.org/unsd/methods/m49/m49alpha.htm">ISO-3166</a>) and will return the full name of the country to which it belongs. For example:</p>
+
+<codelab-snippet>
+Input | Output
+ GBR  | United Kingdom of Great Britain and Northern Ireland
+ IDN  | Indonesia
+ IND  | India
+</codelab-snippet>
+
+            <p>As an extension, if the input is greater than 3 letters, consider it as the name of a country, and return the three-letter code for it. Write a helpful error message if the input is neither a valid code nor a country name.</p>
+            <p>
+              You can find a couple of code snippets that might help in the next step.
+            </p>
+      </codelab-step>
+      <codelab-step
+            label="Code Snippets: Country Codes"
+            duration="0">
+            <br>
+            <p>
+              Creating and adding Countries to a HashMap:
+            </p>
+<codelab-snippet>
+HashMap&lt;String,String&gt; mCodes = new HashMap&lt;&gt;();
+mCodes.put(&quot;AFG&quot;,&quot;Afghanistan&quot;);
+mCodes.put(&quot;BHR&quot;,&quot;Bahrain&quot;);
+mCodes.put(&quot;BGD&quot;,&quot;Bangladesh&quot;);
+mCodes.put(&quot;BRB&quot;,&quot;Barbados&quot;);
+</codelab-snippet>
+            <p>
+                Reading input and retreiving from a hashmap:
+            </p>
+<codelab-snippet>
+BufferredReader&nbsp;br = new BufferedReader(new InputStreamReader(System.in));
+System.out.println(&quot;Enter country code: or e to exit:&quot; );
+String code = br.readLine();
+String codeUp = code.toUpperCase();
+if ( code.length()  &lt;=3  &amp;&amp;  mCodes.get(codeUp)!=null )
+{
+&nbsp; &nbsp; System.out.println(&quot;Country Name: &quot;+ mCodes.get(codeUp));
+}
+else
+{
+&nbsp; &nbsp; System.out.println(&quot;Country &nbsp;not found! Try Again!&quot;);
+}
+
+</codelab-snippet>
+</codelab-step>
+<codelab-step label="Hello Anagrams!" duration="0">
+
+<br>
+
+<p>For this workshop, you will be creating an Android app for a simple anagram game.</p>
+
+<p>An anagram is a word formed by rearranging the letters of another word. For example,&nbsp;<em>cinema</em>&nbsp;is an anagram of&nbsp;<em>iceman</em>.</p>
+
+<p>The mechanics of the game are as follows:</p>
+
+<ul>
+	<li>The game provides the user with a word from the dictionary.</li>
+	<li>The user tries to create as many words as possible that contain all the letters of the given word plus one additional letter. Note that adding the extra letter at the beginning or the end without reordering the other letters is not valid. For example, if the game picks the word &#39;ore&#39; as a starter, the user might guess &#39;rose&#39; or &#39;zero&#39; but not &#39;sore&#39;.</li>
+	<li>The user can give up and see the words that they did not guess.</li>
+</ul>
+
+<p>In order to ensure that the game is not too difficult, the computer will only propose words that have at least 5 possible valid anagrams.</p>
+
+
+<p><img style="height:500px; width:281px" alt="screen shot" src="../img/unit1/anagrams.png" /></p>
+
+
+<p>We have provided you with some&nbsp;<a href="https://cswithandroid.withgoogle.com/content/assets/img/anagrams_starter.zip">starter code</a>&nbsp;that contains a 10,000-word dictionary and handles the UI portions of this game and you will be responsible for writing the&nbsp;<code>AnagramDictionary</code>&nbsp;class that handles all word manipulations.</p>
+
+</codelab-step>
+<codelab-step label="Starter Code" duration="0">
+
+<br>
+<h3>The starter code is composed of two java classes:</h3>
+
+<ul>
+	<li><code>AnagramsActivity</code>: In Android development an&nbsp;<a href="http://developer.android.com/reference/android/app/Activity.html">Activity</a>&nbsp;is a single, focused thing that the user can do. Most of our apps in this class will have a single activity but often apps are made up of multiple activities (e.g. login, settings, etc.). The starter code implements several methods:
+
+	<ul>
+		<li><code>onCreate</code>: this method gets called by the system when the app is launched. It is made up of some boilerplate code plus code that open the word list to initialize the dictionary and code to connect the text box to the processWord helper.</li>
+		<li><code>processWord</code>: a helper that adds words to the UI and colors them</li>
+		<li><code>onCreateOptionsMenu</code>: boilerplate</li>
+		<li><code>onOptionsItemSelected</code>: boilerplate</li>
+		<li><code>defaultAction</code>: this is the handler that is called when the floating button is clicked. Depending on the game mode, it either starts the game or shows the missing answer to the previous game.</li>
+	</ul>
+	</li>
+	<li><code>AnagramDictionary</code>: This class will store the valid words from the text file and handle selecting and checking words for the game. This is where your code will among the following methods:
+	<ul>
+		<li><code>AnagramDictionary</code>: The constructor. It should store the words in the appropriate data structures (details below).</li>
+		<li><code>isGoodWord</code>: Asserts that the given word is in the dictionary and isn&#39;t formed by adding a letter to the start or end of the base word.</li>
+		<li><code>getAnagrams</code>: Creates a list of all possible anagrams of a given word.</li>
+		<li><code>getAnagramsWithOneMoreLetter</code>: Creates a list of all possible words that can be formed by adding one letter to the given word.</li>
+		<li><code>pickGoodStarterWord</code>: Randomly selects a word with at least the desired number of anagrams.</li>
+	</ul>
+	</li>
+</ul>
+
+
+
+</codelab-step>
+
+<codelab-step label="Lets Start!" duration="0">
+<br>
+<p>We will start by implementing a simplified version of the game that has the user guess anagrams of the given word.</p>
+
+<p>To do so, your first task will be to advance the implementation of the&nbsp;<code>AnagramDictionary</code>&#39;s constructor. Each word that is read from the dictionary file should be stored in an&nbsp;<code>ArrayList</code>&nbsp;(called&nbsp;<code>wordList</code>).</p>
+
+<p>We will store duplicates of our words in some other convenient data structures later but&nbsp;<code>wordList</code>&nbsp;will do for now.</p>
+
+<div style="text-align:right">
+
+<paper-button style="text-aling:right" raised label="Show Hint" onclick="toggleDialog('hint1')" role="button" tabindex="0" aria-label="Show Hint">View Hint</paper-button>
+</div>
+<paper-dialog id="hint1">
+  <p>
+    The following code snippets should help you get started.
+  </p>
+   <codelab-snippet>
+
+  //To make the wordList a member of the class
+    private ArrayList<String> wordList;
+
+  //To initialise the ArrayList
+    wordList = new ArrayList<>();
+
+  //To add a word to the ArrayList
+    wordList.add("Hello");
+  </codelab-snippet>
+</paper-dialog>
+
+</codelab-step>
+
+
+<codelab-step label="Implement getAnagrams" duration="0">
+<br>
+
+<p>Implement&nbsp;<code>getAnagrams</code>&nbsp;which takes a string and finds all the anagrams of that string in our input. Our strategy for now will be straight-forward: just compare each string in&nbsp;<code>wordList</code>&nbsp;to the input word to determine if they are anagrams. But how shall we do that?</p>
+
+<p>There are different strategies that you could employ to determine whether two strings are anagrams of each other (like counting the number of occurences of each letter) but for our purpose you will create a helper function (call it&nbsp;<code>sortLetters</code>) that takes a&nbsp;<code>String</code>and returns another&nbsp;<code>String</code>&nbsp;with the same letters in alphabetical order (e.g. &quot;post&quot; -&gt; &quot;opst&quot;). Determining whether two strings are anagrams is then a simple matter of checking that they are the same length (for the sake of speed) and checking that the sorted versions of their letters are equal.</p>
+
+<p>At this point, you should have a working app so try running it on your device and verify that it works. You can change the hard-coded return value of&nbsp;<code>pickGoodStarterWord</code>&nbsp;to try out your code with different words (e.g. &quot;skate&quot;).</p>
+
+<div style="text-align:right">
+  <paper-button style="text-aling:right" raised label="Show Hint" onclick="toggleDialog('hint2')" role="button" tabindex="0" aria-label="Show Hint">View Hint</paper-button>
+</div>
+<paper-dialog id="hint2">
+  <p>
+    Take a look at documentation for <a href="https://docs.oracle.com/javase/7/docs/api/java/util/Arrays.html#sort(char[])">java.util.Arrays</a> to help you with sorting.
+    <br> The code snippet below may also be useful.
+  </p>
+   <codelab-snippet>
+
+        //Iterating through an ArrayList
+        for (String word:WordList) {
+            //Do something with word
+        }
+  </codelab-snippet>
+</paper-dialog>
+
+
+</codelab-step>
+
+
+<codelab-step label="Optimising for Speed" duration="0">
+<br>
+<p>Unfortunately, the straight-forward strategy will be too slow for us to implement the rest of this game. So we will need to revisit our constructor and find some data structures that store the words in ways that are convenient for our purposes. We will create two new data structures (in addition to&nbsp;<code>wordList</code>):</p>
+
+<ul>
+	<li>A&nbsp;<code>HashSet</code>&nbsp;(called&nbsp;<code>wordSet</code>) that will allow us to rapidly (in O(1)) verify whether a word is valid.</li>
+	<li>A&nbsp;<code>HashMap</code>&nbsp;(called&nbsp;<code>lettersToWord</code>) that will allow us to group anagrams together. We will do this by using the&nbsp;<code>sortLetters</code>&nbsp;version of a string as the key and storing an ArrayList of the words that correspond to that key as our value. For example, we may have an entry of the form: key: &quot;opst&quot; value: [&quot;post&quot;, &quot;spot&quot;, &quot;pots&quot;, &quot;tops&quot;, ...].</li>
+</ul>
+
+<p>As you process the input words, call&nbsp;<code>sortLetters</code>&nbsp;on each of them then check whether&nbsp;<code>lettersToWord</code>&nbsp;already contains an entry for that key. If it does, add the current word to&nbsp;<code>ArrayList</code>&nbsp;at that key. Otherwise, create a new&nbsp;<code>ArrayList</code>, add the word to it and store in the&nbsp;<code>HashMap</code>&nbsp;with the corresponding key.</p>
+
+<div style="text-align:right">
+  <paper-button style="text-aling:right" raised label="Show Hint" onclick="toggleDialog('hint3')" role="button" tabindex="0" aria-label="Show Hint">View Hint</paper-button>
+</div>
+<paper-dialog id="hint3">
+  <p>
+    Ensure that you create and instantiate wordSet, and lettersToWord much like the way you created wordList.
+    <br> The code snippet below demonstrates how to add words to lettersToWord.
+  </p>
+   <codelab-snippet>
+     String sortedLetters = sortLetters(word);
+
+
+     ArrayList<String> anagrams = lettersToWord.get(sortedLetters);
+
+     // if anagrams is null
+
+     if(anagrams == null) {
+
+       //create a new arraylist for anagrams
+
+       anagrams = new ArrayList<String>();
+
+       //add anagrams as an element to lettersToWord
+
+       lettersToWord.put(sortedLetters,anagrams);
+
+     }
+
+     //add word to arraylist reference obtained
+     anagrams.add(word);
+  </codelab-snippet>
+</paper-dialog>
+
+</codelab-step>
+
+
+<codelab-step label="isGoodWord" duration="0">
+<br>
+<p>Your next task is to implement&nbsp;<code>isGoodWord</code>&nbsp;which checks:</p>
+
+<ul>
+	<li>the provided word is a valid dictionary word (i.e., in&nbsp;<code>wordSet</code>), and</li>
+	<li>the word does not contain the base word as a substring.</li>
+</ul>
+
+<p>For example, with the base word &#39;post&#39;:</p>
+
+<pre>
+Input                          | Output
+isGoodWord(&quot;nonstop&quot;)      | true
+isGoodWord(&quot;poster&quot;)        | false
+isGoodWord(&quot;lamp post&quot;)   | false
+isGoodWord(&quot;spots&quot;)         | true
+isGoodWord(&quot;apostrophe&quot;)  | false
+</pre>
+
+<p>Checking whether a word is a valid dictionary word can be accomplished by looking at&nbsp;<code>wordSet</code>&nbsp;to see if it contains the word. Checking that the word does not contain the base word as a substring is left as a challenge!</p>
+
+
+</paper-dialog>
+
+</codelab-step>
+
+
+<codelab-step label="getAnagramsWithOneMoreLetter" duration="0">
+<br>
+  <p> Finally, implement <code>getAnagramsWithOneMoreLetter</code> which takes a string and finds all anagrams that can be formed by adding one letter to that word.</p>
+
+  <p>Be sure to instantiate a new ArrayList as your return value then check the given word + each letter of the alphabet one by one against the entries in lettersToWord.</p>
+
+  <p>At this point, you should have a working app so try running your app on your device and verify that it works although the game will be a bit boring since it will always use the same starter word.</p>
+<div style="text-align:right">
+  <paper-button style="text-aling:right" raised label="Show Hint" onclick="toggleDialog('hint4')" role="button" tabindex="0" aria-label="Show Hint">View Hint</paper-button>
+</div>
+<paper-dialog id="hint4">
+  <p>
+    The following code snippets may help.
+  </p>
+   <codelab-snippet>
+     //You can iterate through the alphabet using a loop like this.
+     for (char i = 'a'; i &lt= 'z'; i++)
+      {
+          //generate a key to use with lettersToWord using word + i
+          String key = sortLetters(word+i);
+          //getAnagrams using this key - be sure to check if anagrams actually exist.
+          ArrayList<String> anagrams = lettersToWord.get(genKey);
+      }
+
+
+  </codelab-snippet>
+</paper-dialog>
+</codelab-step>
+
+<codelab-step label="pickGoodStarterWord" duration="0">
+<br>
+<p>If your game is working, proceed to implement&nbsp;<code>pickGoodStarterWord</code>&nbsp;to make the game more interesting. Pick a random starting point in the wordList array and check each word in the array until you find one that has at least&nbsp;<code>MIN_NUM_ANAGRAMS</code>&nbsp;anagrams. Be sure to handle wrapping around to the start of the array if needed. Run your app again to make sure it&#39;s working.</p>
+<div style="text-align:right">
+  <paper-button style="text-aling:right" raised label="Show Hint" onclick="toggleDialog('hint5')" role="button" tabindex="0" aria-label="Show Hint">View Hint</paper-button>
+</div>
+<paper-dialog id="hint5">
+  <p>
+    The starter code includes <code>java.util.Random</code> for you. Hence you will also find an object <code>random</code> in your <code>AnagramsDictionary</code> class.
+    <br>
+    You can thus get a random integer between two limits say min and max for lower and upper limits respectively by using code such as:<br>
+    <pre>int randomNum = rand.nextInt((max - min) + 1) + min;</pre>
+  </p>
+
+</paper-dialog>
+</codelab-step>
+
+<codelab-step label="Refactoring" duration="0">
+<br>
+<h3>Refactoring</h3>
+
+<p>At this point, the game is functional but can be quite hard to play if you start off with a long base word. To avoid this, let&#39;s refactor&nbsp;<code>AnagramDictionary</code>&nbsp;to give words of increasing length.</p>
+
+<p>This refactor starts in the constructor where, in addition to populating&nbsp;<code>wordList</code>, you should also store each word in a&nbsp;<code>HashMap</code>&nbsp;(let&#39;s call it&nbsp;<code>sizeToWords</code>) that maps word length to an&nbsp;<code>ArrayList</code>of all words of that length. This means, for example, you should be able to get all four-letter words in the dictionary by calling&nbsp;<code>sizeToWords.get(4)</code>.</p>
+
+<p>You should also create a new member variable called&nbsp;<code>wordLength</code>&nbsp;and default it to&nbsp;<code>DEFAULT_WORD_LENGTH</code>. Then in&nbsp;<code>pickGoodStarterWord</code>, restrict your search to the words of length<code>wordLength</code>, and once you&#39;re done, increment&nbsp;<code>wordLength</code>&nbsp;(unless it&#39;s already at&nbsp;<code>MAX_WORD_LENGTH</code>) so that the next invocation will return a larger word.</p>
+</codelab-step>
+
+
+<codelab-step label="Extensions" duration="0">
+<br>
+<p>This activity (like all future activities) contains some optional extensions. If time permits, we would like each group to attempt at least one extension, either from the list below or one that you have invented yourselves.</p>
+
+<ul>
+	<li>Two-letter mode: switch to allowing the user to add two letters to form anagrams</li>
+	<li>Optimize word selection by removing words that do not have enough anagrams from the pool of possible starter words. Note that those words should still remain in&nbsp;<code>wordSet</code>&nbsp;since they can still be used as anagrams to other words.</li>
+	<li>Two-word mode: Allow the user to add one letter to a pair of words to form two new valid words.</li>
+</ul>
+
+</codelab-step>
+
+</codelab-codelab>
+
+
+
+
+<script>
+function toggleDialog(elementID) {
+      var dialog = document.querySelector('paper-dialog[id="'+elementID+'"]');
+      dialog.toggle();
+    }
+
+</script>
+</body>
+</html>
