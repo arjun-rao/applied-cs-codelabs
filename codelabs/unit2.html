@@ -1,0 +1,406 @@
+<html>
+<head>
+  <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes">
+  <meta name="theme-color" content="#4F7DC9">
+  <meta charset="UTF-8">
+  <script src="../bower_components/webcomponentsjs/webcomponents.min.js"></script>
+  <script src="../js/menu.js"></script>
+  <link rel="import" href="../bower_components/polymer/polymer.html">
+  <link rel="import" href="../codelab_components/codelab-codelab/codelab-codelab.html">
+  <link rel="stylesheet" href="../css/app.css">
+  <link rel="stylesheet" href="../css/shadowdom-shim.css" shim-shadowdom>
+  <link rel="shortcut icon" href="../img/favicon.png">
+  <style>
+    p {
+      text-align:justify;
+    }
+  </style>
+</head>
+<body unresolved>
+
+  <codelab-codelab label="Unit 2: Starting from Scratch"
+      feedback_link="mailto:mailarjunrao@gmail.com"
+        category="Beginner"
+        environment="web"
+    >
+
+
+      <codelab-step
+        label="Welcome"
+        duration="0">
+        <br>
+        <p>In this unit, we will explore in more details the structure of an Android app.</p>
+
+        <p>We'll start by doing the &quot;build your first app&quot; activity on the&nbsp;<a href="http://developer.android.com/training/basics/firstapp/index.html">Android developer site</a>&nbsp;(the next step has more details).</p>
+
+        <p>Then go back to the Anagram program from last unit&#39;s activity and take a look at its UI and the
+           <code>AnagramActivity</code>
+           class to understand how it is connected to the UI and how it is connected to the
+           <code>AnagramDictionary</code>.</p>
+
+
+
+      </codelab-step>
+
+      <codelab-step
+            label="Creating your first app"
+            duration="0">
+            <br>
+            <p>In Android Studio, create a new project:</p>
+
+            <ul>
+              <li>If you don&#39;t have a project opened, in the&nbsp;<strong>Welcome</strong>&nbsp;screen, click&nbsp;<strong>New Project</strong>.</li>
+              <li>If you have a project opened, from the&nbsp;<strong>File</strong>&nbsp;menu, select&nbsp;<strong>New Project</strong>. The&nbsp;<em>Create New Project</em>&nbsp;screen appears.</li>
+            </ul>
+            <p>Fill out the fields on the screen, and click&nbsp;<strong>Next</strong>.</p>
+
+            <p>The following describes the values to fill in:</p>
+
+            <ul>
+              <li><strong>Application Name</strong>&nbsp;is the app name that appears to users. For this project, use &quot;My First App.&quot;</li>
+              <li><strong>Company domain</strong>&nbsp;provides a qualifier that will be appended to the package name; Android Studio will remember this qualifier for each new project you create.</li>
+              <li><strong>Package name</strong>&nbsp;is the fully qualified name for the project (following the same rules as those for naming packages in the Java programming language). Your package name must be unique across all packages installed on the Android system. You can&nbsp;<strong>Edit</strong>&nbsp;this value independently from the application name or the company domain.</li>
+              <li><strong>Project location</strong>&nbsp;is the directory on your system that holds the project files.</li>
+            </ul>
+            <p>
+              This should have set you up with a simple hello world project, that can be run on a device or emulator.
+              <br>Check out the documentation on running your app <a href="https://developer.android.com/training/basics/firstapp/running-app.html">here</a>
+            </p>
+
+
+      </codelab-step>
+      <codelab-step
+            label="Scarne's Dice"
+            duration="0">
+            <p>Scarne&rsquo;s Dice is a turn-based dice game where players score points by rolling a die and then:</p>
+
+<ul>
+	<li>if they roll a 1, score no points and lose their turn</li>
+	<li>if they roll a 2 to 6:
+	<ul>
+		<li>add the rolled value to their points</li>
+		<li>choose to either reroll or keep their score and end their turn</li>
+	</ul>
+	</li>
+</ul>
+
+<p>The winner is the first player that reaches (or exceeds) 100 points.</p>
+
+<p>For example, if a player starts their turn and rolls a 6, they can choose to either &lsquo;hold&rsquo; and end their turn, in which case they can add the 6 to their score, or to reroll and potentially score more points.</p>
+
+<p>Let&rsquo;s say they decide to roll again, and they get a 4. They now have the option to end their turn and add 10 points (6 + 4) to their score, or to roll again to get even more points.</p>
+
+<p>They decide to roll again, but get a 1. Getting a 1 makes the player lose all the points from their turn (so their score is the same as before their turn), and finishes their turn, allowing the second player to begin their turn.</p>
+
+
+
+
+      </codelab-step>
+      <codelab-step
+            label="Creating the UI"
+            duration="0">
+            <br>
+            <p>In this workshop, we will create the&nbsp;game from scratch in Android Studio.&nbsp;There will be no starter code in this unit&rsquo;s workshop so you will need to create a simple UI for a blank activity.&nbsp;</p>
+
+<p>To start with, create a new project (following instructions similar to step 2). Make sure you choose <strong>empty activty </strong>and <strong>not</strong>&nbsp;blank activity,&nbsp;from the options when creating your project.</p>
+
+<p>As&nbsp;we will be implementing a turn-based dice game, we will require a way to roll the die (and show the result), end the player turn and to reset the game.</p>
+
+<p>Thus you will need to&nbsp;create the UI shown in the image below using either the visual editor or the XML editor (or probably a combination of both).</p>
+
+<p><img style="height:500px; width:281px" alt="screen shot" src="./img/unit2_1.png" /></p>
+<p>The UI is composed of:</p>
+
+<ul>
+	<li>a <code>TextView</code> to display the score and status of the game</li>
+	<li>an <code>ImageView</code> to display the current die (default to the image of your choice from these <a href="./img/dice_faces.zip">dice faces</a>)</li>
+	<li>three buttons to either roll the die, end your turn or start over</li>
+</ul>
+<p>
+  Be sure to copy the dice faces into your project path. The files should be copied to app/src/main/res/drawable.
+</p>
+<div style="text-align:right">
+
+<paper-button style="text-aling:right" raised label="Show Hint" onclick="toggleDialog('hint1')" role="button" tabindex="0" aria-label="Show Hint">View Hint</paper-button>
+</div>
+<paper-dialog id="hint1">
+  <p>
+    The following xml script should give you an idea.
+  </p>
+   <codelab-snippet>
+
+     <p>&lt;TextView android:text=&quot;Starting Game..&quot; android:layout_width=&quot;wrap_content&quot;<br />
+     &nbsp; &nbsp; &nbsp; &nbsp; android:layout_height=&quot;wrap_content&quot;<br />
+     &nbsp; &nbsp; &nbsp; &nbsp; android:id=&quot;@+id/status&quot;<br />
+     &nbsp; &nbsp; &nbsp; &nbsp; android:layout_alignParentTop=&quot;true&quot;<br />
+     &nbsp; &nbsp; &nbsp; &nbsp; android:layout_alignParentLeft=&quot;true&quot;<br />
+     &nbsp; &nbsp; &nbsp; &nbsp; android:layout_alignParentStart=&quot;true&quot;<br />
+     &nbsp; &nbsp; &nbsp; &nbsp; android:textSize=&quot;8pt&quot;<br />
+     &nbsp; &nbsp; &nbsp; &nbsp; android:textStyle=&quot;bold&quot; /&gt;</p>
+
+     <p>&nbsp; &nbsp; &lt;ImageView<br />
+     &nbsp; &nbsp; &nbsp; &nbsp; android:layout_width=&quot;wrap_content&quot;<br />
+     &nbsp; &nbsp; &nbsp; &nbsp; android:layout_height=&quot;wrap_content&quot;<br />
+     &nbsp; &nbsp; &nbsp; &nbsp; android:id=&quot;@+id/dice&quot;<br />
+     &nbsp; &nbsp; &nbsp; &nbsp; android:src=&quot;@drawable/dice1&quot;<br />
+     &nbsp; &nbsp; &nbsp; &nbsp; android:layout_marginTop=&quot;27dp&quot;<br />
+     &nbsp; &nbsp; &nbsp; &nbsp; android:layout_below=&quot;@+id/status&quot;<br />
+     &nbsp; &nbsp; &nbsp; &nbsp; android:layout_centerHorizontal=&quot;true&quot; /&gt;</p>
+
+     <p>&nbsp; &nbsp; &lt;LinearLayout<br />
+     &nbsp; &nbsp; &nbsp; &nbsp; android:orientation=&quot;horizontal&quot;<br />
+     &nbsp; &nbsp; &nbsp; &nbsp; android:layout_width=&quot;wrap_content&quot;<br />
+     &nbsp; &nbsp; &nbsp; &nbsp; android:layout_height=&quot;wrap_content&quot;<br />
+     &nbsp; &nbsp; &nbsp; &nbsp; android:paddingLeft=&quot;2pt&quot;<br />
+     &nbsp; &nbsp; &nbsp; &nbsp; android:layout_below=&quot;@+id/dice&quot;<br />
+     &nbsp; &nbsp; &nbsp; &nbsp; android:layout_centerHorizontal=&quot;true&quot;<br />
+     &nbsp; &nbsp; &nbsp; &nbsp; android:layout_marginTop=&quot;73dp&quot;&gt;</p>
+
+     <p>&nbsp; &nbsp; &nbsp; &nbsp; &lt;Button<br />
+     &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; android:layout_width=&quot;wrap_content&quot;<br />
+     &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; android:layout_height=&quot;wrap_content&quot;<br />
+     &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; android:text=&quot;Roll&quot;<br />
+     &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; android:id=&quot;@+id/roll_btn&quot; /&gt;</p>
+
+     <p>&nbsp; &nbsp; &nbsp; &nbsp; &lt;Button<br />
+     &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; android:layout_width=&quot;wrap_content&quot;<br />
+     &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; android:layout_height=&quot;wrap_content&quot;<br />
+     &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; android:text=&quot;Hold&quot;<br />
+     &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; android:id=&quot;@+id/hold_btn&quot; /&gt;</p>
+
+     <p>&nbsp; &nbsp; &nbsp; &nbsp; &lt;Button<br />
+     &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; android:layout_width=&quot;wrap_content&quot;<br />
+     &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; android:layout_height=&quot;wrap_content&quot;<br />
+     &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; android:text=&quot;Reset&quot;<br />
+     &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; android:id=&quot;@+id/reset_btn&quot; /&gt;<br />
+     &nbsp; &nbsp; &lt;/LinearLayout&gt;</p>
+
+  </codelab-snippet>
+</paper-dialog>
+
+
+      </codelab-step>
+      <codelab-step
+            label="Coding Begins!"
+            duration="0">
+            <br>
+            <p>All the game logic for this app will be implemented in the&nbsp;<code>Activity</code>&nbsp;class (the file will be called&nbsp;<code>MainActivity.java</code>&nbsp;if you accepted the default name). The&nbsp;<code>Activity</code>&nbsp;template has some default methods to which you will add:</p>
+
+            <ul>
+            	<li>Four global variables to store:
+            	<ul>
+            		<li>the user&#39;s overall score state</li>
+            		<li>the user&#39;s turn score</li>
+            		<li>the computer&#39;s overall score</li>
+            		<li>the computer&#39;s turn score</li>
+            	</ul>
+            	</li>
+            	<li>A click handler for the &quot;Roll&quot; button that will:
+            	<ul>
+            		<li>randomly select a dice value</li>
+            		<li>update the display to reflect the rolled value</li>
+            	</ul>
+            	</li>
+            </ul>
+
+            <p>Use&nbsp;<code>getResources().getDrawable</code>&nbsp;in order to programmatically access other images. This functionality will also be needed for the computer turn so a helper function to roll the die may be useful to implement.</p>
+            <div style="text-align:right">
+              <paper-button style="text-aling:right" raised label="Show Hint" onclick="toggleDialog('hint2')" role="button" tabindex="0" aria-label="Show Hint">View Hint</paper-button>
+            </div>
+            <paper-dialog id="hint2">
+              <p>
+                The following code snippet illustrates how you can use the Random class to programmatically generate dice values and assign dice images.
+                <br>
+                Make sure to <code>import java.util.Random;</code>
+              </p>
+               <codelab-snippet>
+                 private int rollImage( int rollValue)
+                 {
+                     switch (rollValue)
+                     {
+                         case 1:
+                             return R.drawable.dice1;
+                         case 2:
+                             return R.drawable.dice2;
+                         case 3:
+                             return R.drawable.dice3;
+                         case 4:
+                             return R.drawable.dice4;
+                         case 5:
+                             return R.drawable.dice5;
+                         case 6:
+                             return R.drawable.dice6;
+
+                     }
+                     return R.drawable.dice1;
+                 }
+
+
+                 private int RollDice()
+                 {
+                     //logic for rolling a dice
+                     Random r = new Random();
+                     int rollValue = r.nextInt(6)+1;
+                     int ImageForRoll = rollImage(rollValue);
+                     ImageView diceimage = (ImageView) findViewById(R.id.image_view_dice)
+                     diceimage.setImageResource(ImageForRoll);
+                     return rollValue;
+                 }
+              </codelab-snippet>
+            </paper-dialog>
+
+</codelab-snippet>
+</codelab-step>
+<codelab-step label="User Functionality" duration="0">
+
+<br>
+<p>Now you can start creating the game logic. If the roll is not a 1, update the user&#39;s turn score by the value of the roll and update the label to &quot;Your score: 0 computer score: 0 your turn score: X&quot;. If the roll is a 1, reset the turn score to 0 and update the label accordingly.&nbsp;<code>TextView</code>&nbsp;can be edited programmatically by calling&nbsp;<code>findViewById</code>&nbsp;to get the&nbsp;<code>TextView</code>&nbsp;object.</p>
+
+<p>Having written the basic &quot;Roll&quot; functionality, you can tackle the other two button handlers:</p>
+
+<ul>
+	<li>When&nbsp;<code>ResetButton</code>&nbsp;is clicked, reset the 4 global variables to 0 and update the label text</li>
+	<li>When&nbsp;<code>HoldButton</code>&nbsp;is clicked, updating the user&#39;s overall score, reset the user round score and update the label.</li>
+</ul>
+<br> An example implementation of the clickListner for the reset button is given below. It goes in the onCreate method of the activity.
+<codelab-snippet>
+  resetbtn.setOnClickListener(new View.OnClickListener(){
+              @Override
+              public void onClick(View v) {
+                  user_oscore=0;
+                  user_tscore=0;
+                  cpu_oscore=0;
+                  cpu_tscore=0;
+                  holdbtn.setEnabled(false);
+                  rollbtn.setEnabled(true);
+                  updateLabel("Roll to Begin!");
+              }
+          });
+</codelab-snippet>
+
+<p>At this stage, the basic user turn functionality is in place.&nbsp;</p>
+
+</codelab-step>
+
+<codelab-step label="Implementing the AI" duration="0">
+
+<br>
+<p>At this stage, the basic user turn functionality is in place. Now, you can implement the computer turn. Start off with a very simple strategy for the computer: if the computer&#39;s round score is less than 20, re-roll, otherwise hold.</p>
+
+<p>Create a helper method called&nbsp;<code>computerTurn</code>, it will need to:</p>
+
+<ul>
+	<li>Disable the roll and hold buttons</li>
+	<li>Create a while loop that loops over each of the computer&#39;s turn. During each iteration of the loop:
+	<ul>
+		<li>pick a random die value and display it (hopefully using the helper you created earlier)</li>
+		<li>follow the game rules depending on the value of the roll.</li>
+	</ul>
+	</li>
+</ul>
+
+<p>Be sure to update the label with the computer&#39;s round score or &quot;Computer holds&quot; or &quot;Computer rolled a one&quot; as appropriate.</p>
+
+<p>Finally, invoke the&nbsp;<code>computerTurn</code>&nbsp;procedure from the both the&nbsp;<code>HoldButton</code>&nbsp;handler and the&nbsp;<code>RollButton</code>&nbsp;handler (if the user rolled a 1).</p>
+
+<p>You may find again that a helper procedure is useful in doing the house cleaning that concludes the computer&#39;s turn (updating the computer&#39;s overall score, reset its turn score and reenabling the buttons).</p>
+
+<p>The game should now be functional so try playing a few rounds against the computer. Remember to use the logging library that you read about in last unit&#39;s preparation to help diagnose what is happening when your program doesn&#39;t behave as expected.</p>
+
+
+
+</codelab-step>
+
+<codelab-step label="Refactoring ComputerTurn" duration="0">
+<br>
+<p>Although the game (hopefully) works roughly as intended you may find the computer turn to be quite hard to follow as it happens so quickly that you can hardly see the die rolls and the label updates. Let&#39;s address that by refactoring the computer turn:</p>
+
+<ul>
+	<li>Get rid of the while loop (but not its contents!) and make the&nbsp;<code>computerTurn</code>&nbsp;method handle a single roll of the computer&#39;s turn</li>
+	<li>If the computer can and does decide to roll again create a timed event that will do so after an appropriate delay (say 500 ms). To accomplish this, you can use&nbsp;<code>Handler.postDelayed</code>, an example of which can be seen on&nbsp;<a href="http://stackoverflow.com/questions/4597690/android-timer-how">StackOverflow</a>.</li>
+</ul>
+<p>
+  Enjoy the wonders of a fully functional game of Scarne's dice!
+</p>
+
+<div style="text-align:right">
+  <paper-button style="text-aling:right" raised label="Show Hint" onclick="toggleDialog('hint3')" role="button" tabindex="0" aria-label="Show Hint">View Hint</paper-button>
+</div>
+<paper-dialog id="hint3">
+  <p>
+    You can create a runnable in the computerTurn method, that includes the logic for one roll by the computer.
+    This can be called with the help of a Handler which uses a delay. Thus the computer's rolls are observable.<br>
+    The following code snippet shows how a runnable can be created and used within computerTurn.
+  </p>
+   <codelab-snippet>
+
+Runnable computerRunnable =  new Runnable() {
+    @Override
+    public void run() {
+        int rollValue;
+
+        //roll logic goes here
+
+       if(rollValue == 1)
+        {
+            //reset turn score to 0 and give control to user
+            return;
+        }
+        else //computer didn&#39;t roll a 1
+        {
+            //update the label and turn scores
+        }
+        if (cpu_tscore &lt; 20) {
+&nbsp;           //if turn score is less than 20, roll again
+            turnHandler.postDelayed(this, 2000);
+        } else {
+            //computer holds
+        }
+    }
+};
+
+turnHandler.postDelayed(computerRunnable, 2000); //used to execute the runnable after 2000 milisecods.
+
+  </codelab-snippet>
+</paper-dialog>
+</codelab-step>
+
+<codelab-step label="Extensions" duration="0">
+<br>
+
+
+<p>This unit&#39;s extension suggestions are:</p>
+
+<ul>
+	<li>Two-dice version. In this version, two standard dice are rolled:
+	<ul>
+		<li>if neither shows a 1, their sum is added to the turn total</li>
+		<li>if a single 1 is rolled, the player scores nothing and the turn ends</li>
+		<li>if two 1s are rolled, the player&rsquo;s entire score is lost, and the turn ends</li>
+		<li>if a double is rolled, the point total is added to the turn total as with any roll but the player is obligated to roll again.</li>
+	</ul>
+	</li>
+	<li>Fast mode: Rather than rolling the dice a variable number of times, the user picks a number of dice to roll then rolls those dice all at once. If a 1 is shown, the user gets nothing. If no 1 is shown, the user gets the sum of the dice. In either case, the turn is over and the other player takes a turn. You can read more about this game in this&nbsp;<a href="http://personal.vu.nl/h.c.tijms/morfismospaper.pdf">research paper</a>.</li>
+	<li>Implement a smarter computer player. I wouldn&#39;t recommend attempting the optimal player (which you can read about&nbsp;<a href="http://cs.gettysburg.edu/projects/pig/pigVis.html">here</a>&nbsp;) but take into account the difference between the computer score and user score in deciding when to hold</li>
+	<li>Write another dice game of your choice</li>
+	<li>Add support for playing the game to 100 points, declaring a winner and starting a new game</li>
+	<li>Create an animation representing each die roll. This will avoid confusion when rolling the same value twice in a row.</li>
+</ul>
+
+
+</codelab-step>
+
+</codelab-codelab>
+
+
+
+
+<script>
+function toggleDialog(elementID) {
+      var dialog = document.querySelector('paper-dialog[id="'+elementID+'"]');
+      dialog.toggle();
+    }
+
+</script>
+</body>
+</html>

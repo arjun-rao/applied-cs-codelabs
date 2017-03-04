@@ -1,0 +1,370 @@
+<html>
+<head>
+  <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes">
+  <meta name="theme-color" content="#4F7DC9">
+  <meta charset="UTF-8">
+  <script src="../bower_components/webcomponentsjs/webcomponents.min.js"></script>
+  <script src="../js/menu.js"></script>
+  <link rel="import" href="../bower_components/polymer/polymer.html">
+  <link rel="import" href="../codelab_components/codelab-codelab/codelab-codelab.html">
+  <link rel="stylesheet" href="../css/app.css">
+  <link rel="stylesheet" href="../css/shadowdom-shim.css" shim-shadowdom>
+  <link rel="shortcut icon" href="../img/favicon.png">
+  <style>
+    p {
+      text-align:justify;
+    }
+  </style>
+</head>
+<body unresolved>
+
+  <codelab-codelab label="Unit 5: Puzzle 8"
+      feedback_link="mailto:mailarjunrao@gmail.com"
+        category="Advanced"
+        environment="web"
+    >
+
+
+      <codelab-step
+        label="Preparation"
+        duration="0">
+        <br>
+        <p>Start by reviewing the&nbsp;<a href="https://en.wikipedia.org/wiki/Queue_(abstract_data_type)">queue</a>&nbsp;and&nbsp;<a href="https://en.wikipedia.org/wiki/Heap_(data_structure)">heap</a>&nbsp;data structures. Then bring the two together with some readings on&nbsp;<a href="http://algs4.cs.princeton.edu/24pq/">priority queues</a>. The&nbsp;<a href="https://www.cs.auckland.ac.nz/software/AlgAnim/heaps.html">University of Auckland</a>&nbsp;also has some interesting content for further reading.</p>
+
+        <p>This content is not simple so take some time to read it carefully and understand it as you will be expected to implement a heap-based priority queue during the workshop.</p>
+
+        <p>In addition, do a bit more reading about&nbsp;<a href="http://developer.android.com/guide/components/intents-filters.html">Intents</a>&nbsp;in Android as we will be using them in the workshop activity. Also, make sure you are running the&nbsp;<a href="http://tools.android.com/download/studio">latest version of Android Studio</a>.</p>
+
+
+
+
+
+      </codelab-step>
+
+      <codelab-step
+            label="Introduction to Puzzle 8"
+            duration="0">
+            <br>
+            <p>This game goes by many names: some call it puzzle-8 or 8-puzzle or 15-puzzle. The idea is to slide tiles around to form an image or to recreate a numerical sequence.</p>
+
+            <p>Here is a physical example of this classic game:</p>
+
+            <p><img alt="classic puzzle 15" style="height:400px; width:400px" src="./img/15-puzzle-02.jpg" /></p>
+
+            <p>If you have not seen this game before, each tile can slide either horizontally or vertically into the empty space in order to reorder the tiles. You can read more about the game on&nbsp;<a href="https://en.wikipedia.org/wiki/15_puzzle">Wikipedia</a>.</p>
+
+            <p>For our version of this game, we will not be using numbered tiles but a photo taken by the user with the phone&#39;s camera</p>
+            <p>his is what the UI will look like with an image of a part of Google&#39;s (old) logo:</p>
+
+            <p><img alt="screenshot" style="height:711px; width:400px" src="./img/15puzzleapp.png" /></p>
+
+
+
+
+      </codelab-step>
+      <codelab-step
+            label="The starter code"
+            duration="0">
+          <br>
+           <p>The&nbsp;<a href="./img/Puzzle8_starter.zip">starter code</a>&nbsp;for this activity is composed of four classes:</p>
+
+          <ul>
+            <li><code>PuzzleActivity</code>&nbsp;which is the lone activity for this program:
+
+            <ul>
+              <li><code>onCreate</code>: in addition to the boilerplate, the given implementation programmatically adds the&nbsp;<code>PuzzleBoardView</code>&nbsp;object to the UI.</li>
+              <li><code>onCreateOptionsMenu</code>,&nbsp;<code>onOptionsItemSelected</code>: just boilerplate</li>
+              <li><code>dispatchTakePictureIntent</code>: handler for the&nbsp;<code>Take Photo</code>&nbsp;button</li>
+              <li><code>onActivityResult</code>: handler for the system call when the photo taking is complete.</li>
+              <li><code>shuffleImage</code>&nbsp;and&nbsp;<code>solve</code>: trivial handlers for the other two buttons</li>
+            </ul>
+            </li>
+            <li><code>PuzzleBoardView</code>, a custom&nbsp;<code>View</code>&nbsp;responsible for drawing the puzzle on screen
+            <ul>
+              <li><code>PuzzleBoardView</code>: Constructor. Given implementation is complete.</li>
+              <li><code>initialize</code>: to add a picture to the view.</li>
+              <li><code>onDraw</code>: called by the system when the view should be redrawn. Note the code that will animate the solution once you implement the solver.</li>
+              <li><code>shuffle</code>: the actual handler for the &quot;Shuffle&quot; button. You will need to implement this.</li>
+              <li><code>onTouchEvent</code>: code that handles user clicks</li>
+              <li><code>solve</code>: where your solver code will go</li>
+            </ul>
+            </li>
+            <li><code>PuzzleBoard</code>&nbsp;which represent the state of the puzzle. This class is separate from&nbsp;<code>PuzzleBoardView</code>&nbsp;because there will always be only one&nbsp;<code>PuzzleBoardView</code>&nbsp;but we will deal with multiple&nbsp;<code>PuzzleBoard</code>&nbsp;objects when we implement the shuffle and solve functionality
+            <ul>
+              <li><code>NEIGHBOUR_COORDS</code>: a constant array storing the relative coords of all the neighbors of one tile. This will make possible to check neighbors with a for-loop rather than 4 if-statements.</li>
+              <li><code>PuzzleBoard</code>: Constructor. This should handle breaking up the given image into tile-sized chunks.</li>
+              <li><code>PuzzleBoard</code>: Copy constructor. This constructor creates a puzzle board that copies the state of another puzzle board. This will be handy when implementing&nbsp;<code>neighbors</code>&nbsp;below.</li>
+              <li><code>reset</code>: Part of the solver functionality</li>
+              <li><code>equals</code>: Tests whether two boards are equal by checking whether their tile configuration is the same.</li>
+              <li><code>draw</code>: Called by&nbsp;<code>PuzzleBoardView</code>&#39;s&nbsp;<code>onDraw</code>. Makes each tile draw itself.</li>
+              <li><code>click</code>: Called by&nbsp;<code>PuzzleBoardView</code>&#39;s&nbsp;<code>onTouchEvent</code>. Determines which tile was clicked and attempts to move it.</li>
+              <li><code>tryMoving</code>: helper for&nbsp;<code>click</code>.</li>
+              <li><code>resolved</code>: Checks whether the current board is solved. This is the reason why we store indexes in each tile.</li>
+              <li><code>XYtoIndex</code>: helper method to convert between two-dimensional coordinates and positions in the ArrayList.</li>
+              <li><code>swapTiles</code>: private helper. Does what it says.</li>
+              <li><code>neighbours</code>: will create a list of all board configurations that can be reached by moving a single tile in the current board.</li>
+              <li><code>priority</code>: computes the priority of the current board. This will be explained as part of the instructions for the solver.</li>
+            </ul>
+            </li>
+            <li><code>PuzzleTile</code>&nbsp;which represents a single tile. This is fully implemented for you.
+            <ul>
+              <li><code>PuzzleTile</code>: Simple constructor that stores the given index and bitmap.</li>
+              <li><code>getNumber</code>: Getter for the tile index.</li>
+              <li><code>draw</code>: Draws the bitmap on the given canvas at the given location.</li>
+              <li><code>isClicked</code>: Determines whether the touch location falls within the tile.</li>              
+            </ul>    
+        </ul>
+
+
+
+      </codelab-step>
+      <codelab-step
+            label="Taking Pictures"
+            duration="0">
+            <br>
+            <p>To implement the picture-taking functionality, start in&nbsp;<code>dispatchTakePictureIntent</code>&nbsp;method (that is the handler for the &quot;Take photo&quot; button) to create a new intent using&nbsp;<code>MediaStore.ACTION_IMAGE_CAPTURE</code>&nbsp;and start that intent.</p>
+
+            <p>To test the picture-taking functionality, update&nbsp;<code>onActivityResult</code>&nbsp;to display the thumbnail of the captured image in an&nbsp;<code>ImageView</code>&nbsp;in the UI (hint: the thumbnail can be found in the intent that&nbsp;<code>onActivityResult</code>&nbsp;is called with. Look at&nbsp;<code>getExtras</code>, and &quot;data&quot; within the extras). At this point you should be able to run your app and verify that you are able to take a picture and display it in the UI.</p>
+
+            
+      <div style="text-align:right">
+
+      <paper-button style="text-aling:right" raised label="Show Hint" onclick="toggleDialog('hint1')" role="button" tabindex="0" aria-label="Show Hint">View Hint</paper-button>
+      </div>
+      <paper-dialog id="hint1">
+        <p>
+          The following codesnippets should help you.
+        </p>
+        <codelab-snippet>
+
+<p>@Override<br />
+&nbsp; &nbsp; protected void onActivityResult(int requestCode, int resultCode, Intent data) {</p>
+
+<p>&nbsp; &nbsp; &nbsp; &nbsp; if (requestCode == REQUEST_IMAGE_CAPTURE &amp;&amp; resultCode == RESULT_OK) {<br />
+      Bundle extras = data.getExtras();
+      Bitmap imageBitmap = (Bitmap) extras.get("data");
+      //TODO: Display thumbnail in image.
+      }<br />
+&nbsp; &nbsp; }</p>
+
+<p>&nbsp; &nbsp; public void dispatchTakePictureIntent(View view) {<br />
+&nbsp; &nbsp; &nbsp; &nbsp; Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);<br />
+&nbsp; &nbsp; &nbsp; &nbsp; if (takePictureIntent.resolveActivity(getPackageManager()) != null) {<br />
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);<br />
+&nbsp; &nbsp; &nbsp; &nbsp; }<br />
+&nbsp; &nbsp; }</p>
+
+
+        </codelab-snippet>
+      </paper-dialog>
+
+      </codelab-step>
+      <codelab-step
+            label="Basic Game Functionality"
+            duration="0">
+            <br>
+            <p>So far we have laid the groundwork for Puzzle-8 so you should be able to proceed with the more complicated parts of the game:</p>
+
+            <p>The three classes that implement the game functionality are:</p>
+
+            <ul>
+              <li><code>PuzzleBoardView</code>&nbsp;inherits from&nbsp;<code>View</code>&nbsp;and is responsible for drawing of a puzzle board in the UI. It also handles the shuffling (and later the solving) of the puzzle</li>
+              <li><code>PuzzleBoard</code>&nbsp;represents the current state of the puzzle board</li>
+              <li><code>PuzzleTile</code>&nbsp;is responsible for drawing and manipulating a single tile</li>
+            </ul>
+
+            <p>The&nbsp;<code>PuzzleTile</code>&nbsp;implementation is provided so take a moment to read through it.</p>
+
+            <p>You can now delete the&nbsp;<code>ImageView</code>&nbsp;that you used to test the picture-taking functionality. Instead, we will display the photo in a&nbsp;&nbsp;<code>PuzzleBoardView</code>. But because&nbsp;&nbsp;<code>PuzzleBoardView</code>&nbsp;is a custom-type, it is added to the UI programmatically rather than using the UI editor. The code to do this is provided in the&nbsp;<code>PuzzleActivity.onCreate</code>&nbsp;method.</p>
+
+            <p>Next, implement the constructor for&nbsp;<code>PuzzleBoard</code>. It should take the passed-in&nbsp;<code>Bitmap</code>&nbsp;object and divide it into<code>NUM_TILES</code>x<code>NUM_TILES</code> equal-sized pieces. (Hint: You can use the<code>Bitmap.createBitmap</code> and <code>Bitmap.createScaledBitmap</code> methods to do so.) Then use each &quot;chunk&quot; of the bitmap to initialize a tile object. Remember to leave the last tile ;<code>null</code> to represent the &#39;empty&#39; tile!</p>
+
+            <p>You should then display these tiles on the board (removing the&nbsp;<code>ImageView</code>&nbsp;you may have used to test the picture-taking functionality).</p>
+
+            <p>Try running your app and make sure that the photo you take is chopped up into appropriately-sized tiles and that the unshuffled puzzle is properly rendered on the screen. Because the tap functionality is provided, you should also be able to manually shuffle the board.</p>
+
+            <div style="text-align:right">
+              <paper-button style="text-aling:right" raised label="Show Hint" onclick="toggleDialog('hint2')" role="button" tabindex="0" aria-label="Show Hint">View Hint</paper-button>
+            </div>
+            <paper-dialog id="hint2">
+              <p>
+                The constructor for PuzzleBoard could be implemented like so:
+              </p>
+               <codelab-snippet>
+  PuzzleBoard(Bitmap bitmap, int parentWidth) {                
+        tiles = new ArrayList<>();
+        int tileWidth = bitmap.getWidth() / NUM_TILES;
+        int tileHeight = bitmap.getHeight() / NUM_TILES;
+        int tileScaledWidth = parentWidth / NUM_TILES;
+        int tileScaledHeight = parentWidth / NUM_TILES;
+        for (int y = 0; y < NUM_TILES; y++) {
+            for (int x = 0; x < NUM_TILES; x++) {
+                Bitmap tileBitmap = Bitmap.createBitmap(bitmap, x * tileWidth, y * tileHeight, tileWidth, tileHeight);
+                Bitmap scaledTileBitmap = Bitmap.createScaledBitmap(tileBitmap, tileScaledWidth, tileScaledHeight, false);
+                PuzzleTile tile = new PuzzleTile(scaledTileBitmap, x + y * NUM_TILES);
+                if (x == NUM_TILES - 1 && y == NUM_TILES - 1) {
+                    tiles.add(null);
+                } else {
+                    tiles.add(tile);
+                }
+
+            }
+        }        
+    }
+              </codelab-snippet>
+            </paper-dialog>
+
+</codelab-step>
+<codelab-step label="Shuffle Functionality" duration="0">
+
+<br>
+<p>Next, we will implement the shuffle functionality. One option would be to implement shuffling by randomly swapping tiles, but that could lead to a puzzle that cannot be solved. In order to avoid this, we will instead make a number of random moves starting with the solved puzzle to create the shuffled puzzle. Implement <code>PuzzleBoard.neighbours</code> which is a method that returns an <code>ArrayList</code> of all the <code>PuzzleBoard</code> configurations that are possible by moving one tile in the current <code>PuzzleBoard</code>. Note that depending on where the empty square is, there could be 2, 3 or 4 possible moves. So implement the neighbours method to:</p>
+
+<ul>
+	<li>locate the empty square in the current board</li>
+	<li>consider all the neighbours of the empty square (using the <code>NEIGHBOUR_COORDS</code> array)</li>
+	<li>if the neighbouring square is valid (within the boundaries of the puzzle), make a copy of the current board (using the provided copy constructor), move the tile in that square to the empty square and add this copy of the board to the list of neighbours to be returned</li>
+</ul>
+
+<p>The implementation of <code>PuzzleBoardView.shuffle</code> is then a matter of repeatedly updating <code>PuzzleBoardView.puzzleBoard</code> to a randomly selected value from<code>PuzzleBoardView.puzzleBoard.neighbours()</code>. Don&#39;t forget to call <code>invalidate()</code> at the end of the shuffle method in order to update the UI.</p>
+
+<p>You can now test your app by taking a picture, shuffling it and manually trying to solve the puzzle. If you enjoy a challenge, try updating <code>NUM_TILES</code> to 4 and manually solving the puzzle. Note that you can also vary the difficulty of the puzzle with the content of the picture that you take.</p>
+
+ <div style="text-align:right">
+              <paper-button style="text-aling:right" raised label="Show Hint" onclick="toggleDialog('hint3')" role="button" tabindex="0" aria-label="Show Hint">View Hint</paper-button>
+            </div>
+            <paper-dialog id="hint3">
+              <p>
+                The shuffle method could be written like this:`
+              </p>
+               <codelab-snippet>
+  public void shuffle() {
+        if (animation == null && puzzleBoard != null) {
+            Random random = new Random();
+            PuzzleBoard randomBoard = puzzleBoard;
+            for (int i = 0; i < NUM_SHUFFLE_STEPS; i++) {
+                ArrayList<PuzzleBoard> neighbours = randomBoard.neighbours();
+                randomBoard = neighbours.get(random.nextInt(neighbours.size()));
+            }
+            puzzleBoard = randomBoard;
+            invalidate();            
+        }
+    }
+
+
+</codelab-step>
+
+<codelab-step label="Puzzle 8 Solver" duration="0">
+<br>
+<p>It is fun to play puzzle-8 for a while but wouldn&#39;t it be nice to let the computer solve it for you when you get stuck? You will implement a solver that uses a best-first search algorithm to find the quickest solution to the current puzzle. You will do so by implementing the&nbsp;<a href="http://en.wikipedia.org/wiki/A*_search_algorithm">A* search algorithm</a>, an algorithm from AI that is widely used in pathfinding and graph traversal.</p>
+
+<p>We have already defined&nbsp;<code>PuzzleBoard</code>&nbsp;to represent a state of the board (e.g. the current state or the states generated by moving a single tile). You will add to this class two members:</p>
+
+<ul>
+	<li>An integer called&nbsp;<code>steps</code>&nbsp;representing the number of steps required to reach the given state. You should update&nbsp;<code>PuzzleBoard</code>&#39;s copy constructor to set steps to one more than the value passed in with&nbsp;<code>otherBoard</code>.</li>
+	<li>A&nbsp;<code>PuzzleBoard</code>&nbsp;object called&nbsp;<code>previousBoard</code>&nbsp;referring to the previous state of the board before reaching the current state. You should set&nbsp;<code>previousBoard</code>&nbsp;to&nbsp;<code>otherBoard</code>&nbsp;in the copy constructor.</li>
+	<li>&nbsp;</li>
+</ul>
+
+</codelab-step>
+
+<codelab-step label="Manhatten Priorities" duration="0">
+<br>
+<p>Our search algorithm then consists of maintaining a&nbsp;<code>PriorityQueue</code>&nbsp;(part of the Java library) of possible board states and considering the best state we have so far and adding all of its neighbours onto the&nbsp;<code>PriorityQueue</code>&nbsp;until we solve the puzzle. The success of this approach relies on the use of an appropriate priority function associated with each&nbsp;<code>PuzzleBoard</code>. We will use a Manhattan priority function which is the sum of the distances (sum of the vertical and horizontal distance) from the blocks to their goal positions, plus the number of moves made so far to get to the state.</p>
+
+<p>For example with a starting configuration of:</p>
+
+<pre>
+<code>
+8 1 3
+4   2
+7 6 5
+</code></pre>
+
+<p>And a desired target of:</p>
+
+<pre>
+<code>
+1 2 3
+4 5 6
+7 8
+</code></pre>
+
+<p>We have the following Manhattan distances for each of the blocks, which is simply the number of steps from the blocks current position to its correct position.</p>
+
+<pre>
+<code> 
+ 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8
+-------------------------------
+ 1 | 2 | 0 | 0 | 2 | 2 | 0 | 3
+</code></pre>
+
+<p>This results in a Manhattan priority of 10 (sum of the second row) +&nbsp;<em>number of moves so far</em></p>
+
+
+
+
+</codelab-step>
+
+
+
+<codelab-step label="Coding the AI" duration="0">
+<br>
+<p>Using this strategy works because to solve the puzzle from a given&nbsp;<code>PuzzleBoard</code>, the total number of moves we need to make (including those already made) is at least its priority.</p>
+
+<p>Consequently, as soon as we dequeue a state, we have not only discovered a sequence of moves from the initial board to the board associated with the state, but one that makes the fewest number of moves.</p>
+
+<p>So start by implementing the&nbsp;<code>PuzzleBoard.priority</code>&nbsp;method to return the Manhattan distance + steps. Then implement&nbsp;<code>PuzzleBoardView.solve</code>&nbsp;to:</p>
+
+<ul>
+	<li>Instantiate a&nbsp;<code>PriorityQueue</code>&nbsp;object (this will require you to createa custom&nbsp;<code>PuzzleBoardComparator</code>&nbsp;that compares the priority of two boards. Android Studio is helpful in creating the template for you)</li>
+	<li>Add the current&nbsp;<code>PuzzleBoard</code>&nbsp;to the queue (0 moves, and a null previous state)</li>
+</ul>
+
+<p>Then while the queue is not empty:</p>
+
+<ul>
+	<li>Remove from the priority queue the&nbsp;<code>PuzzleBoard</code>&nbsp;with the lowest priority</li>
+	<li>If the removed&nbsp;<code>PuzzleBoard</code>&nbsp;is not the solution, insert onto the&nbsp;<code>PriorityQueue</code>&nbsp;all neighbouring states (reusing the neighbours method).</li>
+	<li>If it is the solution, create an&nbsp;<code>ArrayList</code>&nbsp;of all the&nbsp;<code>PuzzleBoards</code>&nbsp;leading to this solution (you will need to create a getter for&nbsp;<code>PuzzleBoard.previousBoard</code>). Then use&nbsp;<code>Collections.reverse</code>&nbsp;to turn it into an in-order sequence of all the steps to solving the puzzle. If you copy that&nbsp;<code>ArrayList</code>&nbsp;to&nbsp;<code>PuzzleBoardView.animation</code>, the given implementation of&nbsp;<code>onDraw</code>&nbsp;will animate the sequence of steps to solve the puzzle</li>
+</ul>
+
+<h3><strong>A critical optimization</strong></h3>
+
+<p>After implementing best-first search, you will notice one undesirable feature: states corresponding to the same board position are enqueued on the priority queue many times. To prevent unnecessary exploration of useless states, when considering the neighbours of a state, don&#39;t enqueue the neighbour if its board position is the same as the previous state.</p>
+
+
+</codelab-step>
+
+
+
+<codelab-step label="Extensions" duration="0">
+<br>
+<p>These extensions offer a variety of different ways you might extend the basic Puzzle-8 functionality:</p>
+
+<ul>
+	<li>Replace the use of the standard Java&nbsp;<code>PriorityQueue</code>&nbsp;object, with your own min-heap-based implementation of a priority queue. You only need to support a simple constructor and three methods (add, remove and isEmpty) and you can make your implementation&nbsp;<code>PuzzleBoard</code>-specific (it does not need to handle generic types).</li>
+	<li>Animate the movement of each tile (rather than having them jump into position)</li>
+	<li>Support playing the game by swiping the tiles instead of tapping them</li>
+	<li>Add a &quot;settings&quot; activity that allow the user to select the desired number of tiles</li>
+	<li>Instead of using the thumbnail provided by the&nbsp;<code>ACTION_IMAGE_CAPTURE</code>&nbsp;intent, try using the&nbsp;<a href="http://developer.android.com/training/camera/photobasics.html">full-definition image</a>&nbsp;taken by the camera.</li>
+	<li>Allow the user to select taking a new photo or using a photo from their image folder</li>
+</ul>
+
+
+</codelab-step>
+
+</codelab-codelab>
+
+
+
+
+<script>
+function toggleDialog(elementID) {
+      var dialog = document.querySelector('paper-dialog[id="'+elementID+'"]');
+      dialog.toggle();
+    }
+
+</script>
+</body>
+</html>
