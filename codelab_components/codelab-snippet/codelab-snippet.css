@@ -1,6 +1,7 @@
 pre {
   font-family: 'Source Code Pro', Helvetica, Arial !important;
-  overflow-x: auto;
+  overflow-x: scroll;
+  overflow-y: scroll;
   padding: 16px;
   border-radius: 3px;
   font-size: 0.85em;
